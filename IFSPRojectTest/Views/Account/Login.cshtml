@@ -1,0 +1,41 @@
+﻿@model IFSPRojectTest.Persitance.model.IFSLoginView
+
+@{
+    ViewBag.Title = "Recruiter Login";
+}
+
+<hgroup class="title">
+    <h2>@ViewBag.Title.</h2>
+    <p>You must log in to complete that action. Enter your credentials below.</p>
+</hgroup>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Log in was unsuccessful. Please correct the errors and try again.")
+
+
+    <div>
+        <span class="editor-label">
+            @Html.LabelFor(m => m.UserName)
+        </span>
+        <span class="editor-field">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "text-box" })
+        </span>
+    </div>
+
+    <div>
+        <span class="editor-label">
+            @Html.LabelFor(m => m.Password)
+        </span>
+        <span class="editor-field">
+            @Html.PasswordFor(m => m.Password, new { @class = "text-box" })
+        </span>
+    </div>
+
+    <input type="submit" value="Log in" formaction="Login" />
+
+    
+}
+    
+
+

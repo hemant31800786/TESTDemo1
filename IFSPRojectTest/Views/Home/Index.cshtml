@@ -1,0 +1,93 @@
+﻿@model List<IFSPRojectTest.Persitance.model.Candidate>
+@using IFSPRojectTest.Controllers
+@{
+    ViewBag.Title = "Home Page";
+    var grid = new WebGrid(canPage: true, rowsPerPage: ViewBag.RowsPerPage);
+    grid.Bind(source: Model, rowCount: ViewBag.TotalRows, autoSortAndPage: false);
+}
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<script src="~/Scripts/bootbox.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<div class="container">
+    <h2>Candidate List</h2>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">Search</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                @using (Html.BeginForm("index", "home", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                {
+                    <div class="form-group">
+                        <input type="text" name="Exp" value="@ViewBag.min" class="form-control" placeholder="Min Exp(only digit) not implements" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="Exp" value="@ViewBag.max" class="form-control" placeholder="Max Exp(only digit) not implements" />
+                    </div>
+                    <button type="submit" value="Search" class="btn btn-success" onclick="'/Home/GetSeachList/'">Search</button>
+                    <lable>&nbsp;&nbsp;Total Records:</lable><label id="lblTotalRecords">@ViewBag.TotalRows</label>
+                }
+
+            </div>
+        </div>
+    </nav>
+    <div>
+        @grid.Table(
+            tableStyle: "table table-responsive table-bordered",
+            columns: grid.Columns(
+               grid.Column(columnName: "name.Firstname", header: "First Name"),
+                grid.Column(columnName: "name.Lastname", header: "Last Name"),
+                grid.Column(columnName: "email", header: "Email"),
+                grid.Column(columnName: "phone", header: "Phone"),
+                 grid.Column(columnName: "address", header: "Address"),
+                   
+                 grid.Column(header: "Action", style: "buttoncolumn", format: @<text>
+                        <div width="50%" style="float:left">
+                            <button id="Accept_@item.JID" type="button" class="btn btn-success" onclick="clickAcceptReject('@item.JID',true)">Accept</button>
+
+                        </div>
+                        <div width="50%" style="float:right">
+                            <button id="Reject_@item.JID" type="button" class="btn btn-warning" onclick="clickAcceptReject('@item.JID',false)">Reject</button>
+
+                        </div>
+                </text>)
+)
+)
+
+        <div class="row">
+            <div class="col-sm-6">
+                @grid.PagerList(mode: WebGridPagerModes.All, paginationStyle: "pagination pagination-small pagination-right", numericLinksCount: 10)
+            </div>
+        </div>
+
+        @Html.Hidden("dir", grid.SortDirection)
+        @Html.Hidden("col", grid.SortColumn)
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+      function clickAcceptReject(jid,ar)
+      {
+          $.ajax({
+            url: "@Url.Action("AcceptRejectCandidtae", "Home")?JID=" + jid + "&isAccept=" + ar +"",
+            success: function (result, status, xhr) {
+                location.reload();         
+            },
+            error: function (xhr, status, error) {
+                //alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+            }
+        });
+      }
+</script>

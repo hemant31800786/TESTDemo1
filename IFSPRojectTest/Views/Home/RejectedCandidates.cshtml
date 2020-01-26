@@ -1,0 +1,79 @@
+﻿@model List<IFSPRojectTest.Persitance.model.Candidate>
+@using IFSPRojectTest.Controllers
+@{
+    ViewBag.Title = "Rejected Candidates";
+    var grid = new WebGrid(canPage: true, rowsPerPage: ViewBag.RowsPerPage);
+    grid.Bind(source: Model, rowCount: ViewBag.TotalRows, autoSortAndPage: false);
+}
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<script src="~/Scripts/bootbox.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<div class="container">
+    <h2>Rejected Candidate List</h2>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">Search</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                @using (Html.BeginForm("RejectedCandidates", "home", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                {
+                    <div class="form-group">
+                        <input type="text" name="search" value="@ViewBag.search" class="form-control" placeholder="search" />
+                    </div>
+                    <button type="submit" value="Search" class="btn btn-success" onclick="'/Home/Index/'">Search</button>
+                    <lable>&nbsp;&nbsp;Total Records:</lable><label id="lblTotalRecords">@ViewBag.TotalRows</label>
+                }
+            </div>
+        </div>
+    </nav>
+    <div>
+        @grid.Table(
+        tableStyle: "table table-responsive table-bordered",
+        columns: grid.Columns(
+        grid.Column(columnName: "name.Firstname", header: "First Name"),
+        grid.Column(columnName: "name.Lastname", header: "Last Name"),
+        grid.Column(columnName: "email", header: "Email"),
+        grid.Column(columnName: "phone", header: "Phone"),
+        grid.Column(columnName: "address", header: "Address")
+
+)
+)
+
+        <div class="row">
+            <div class="col-sm-6">
+                @grid.PagerList(mode: WebGridPagerModes.All, paginationStyle: "pagination pagination-small pagination-right", numericLinksCount: 10)
+            </div>
+        </div>
+
+        @Html.Hidden("dir", grid.SortDirection)
+        @Html.Hidden("col", grid.SortColumn)
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+      function clickRecruit(jid,ar)
+      {
+          @*$.ajax({
+            url: "@Url.Action("AcceptRejectCandidtae", "Home")?JID=" + jid + "&isAccept=" + ar +"",
+            success: function (result, status, xhr) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                //alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+            }
+        });*@
+      }
+</script>

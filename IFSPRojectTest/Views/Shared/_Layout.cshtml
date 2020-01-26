@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+@using IFSPRojectTest.Persitance.model
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - IFS Test Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("IFS Test Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (Session[Common.CandidateUserName] != null)
+                    {
+                        <li>@Html.ActionLink("Selected Candidates", "SelectedCandidates", "Home")</li>
+                        <li>@Html.ActionLink("Rejected Candidates", "RejectedCandidates", "Home")</li>
+                        <li>@Html.ActionLink("Recruited Candidates", "RecuritedCandidates", "Home")</li>
+                    }
+                </ul>
+                <div class="login-controls">
+                    @if (Session[Common.CandidateUserName] != null)
+                    {
+                        <div class="userlabel">
+                            <label class="welcomelabel">Hello, @Html.Raw(Session[Common.CandidateUserName])</label>
+                        </div>
+
+                        <div class="logoff">
+                            @Html.ActionLink("Log Off", "LogOff", "Account")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="login">
+                            @Html.ActionLink("Log In", "Login", "Account")
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - IFS Test Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
